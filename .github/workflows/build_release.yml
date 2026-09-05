@@ -57,7 +57,7 @@ jobs:
             gh release create ${BUILD_TAG} --target "${{ github.sha }}" \
                                            --title "Development Build ${BUILD_TAG}" \
                                            -F .github/workflows/weekly-build-notes.md \
-                                           --prerelease || \
+                                           --latest || \
             gh release view ${BUILD_TAG} > /dev/null  # fail if it doesn't exist
           fi
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
