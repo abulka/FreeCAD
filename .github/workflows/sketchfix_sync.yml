@@ -1,0 +1,47 @@
+name: Sketchfix upstream sync
+
+# Monthly maintenance for this fork: merge upstream FreeCAD main into the fork's
+# main (which carries the Sketcher symmetric-constraint fix), so that the monthly
+# build_release.yml cron (03:00 UTC, same day) builds latest upstream + the fix.
+# On merge conflicts this fails loudly - resolve manually, then re-run.
+
+on:
+  schedule:
+    - cron: "0 0 1 * *" # 00:00 UTC on the 1st, 3h before the build cron
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sketchfix-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork main (full history for the merge)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge upstream main
+        run: |
+          git remote add upstream https://github.com/FreeCAD/FreeCAD.git
+          git fetch upstream main
+          echo "Merging upstream/main ($(git rev-parse --short upstream/main)) into fork main ($(git rev-parse --short HEAD))"
+          if ! git merge upstream/main --no-edit; then
+            echo "::error::Merge conflict: upstream/main could not be merged cleanly into fork main. Resolve the conflict manually (or on request), then push main and re-dispatch the build."
+            exit 1
+          fi
+          git log --oneline -5
+
+      - name: Push main
+        run: git push origin main

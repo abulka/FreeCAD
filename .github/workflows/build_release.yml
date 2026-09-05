@@ -3,7 +3,7 @@ on:
   release:
     types: [published]
   schedule:
-   - cron: "0 0 * * 3"
+   - cron: "0 3 1 * *"  # monthly: 03:00 UTC on the 1st (fork: builds sketchfix main after the 00:00 sync)
   workflow_dispatch:
 
 permissions:
