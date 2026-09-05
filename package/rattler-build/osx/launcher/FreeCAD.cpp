@@ -43,13 +43,8 @@ int main(int argc, char *argv[], char *const *envp) {
     }
     new_env[i] = NULL;
 
-    i = 0;
-    while(new_env[i] != NULL) {
-        std::cout << new_env[i] << std::endl;
-        i++;
-    }
+    // NOTE: no environment dumping here - the environment may contain secrets
 
-    std::cout << "Running: " << FreeCAD << std::endl;
     i = 0;
     while(argv[i] != NULL) {
         i++;
