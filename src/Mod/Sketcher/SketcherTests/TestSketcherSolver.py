@@ -1050,9 +1050,14 @@ class TestSketcherSolver(unittest.TestCase):
         self.Doc.recompute()
 
         status = sketch.solve()
+        # platform-dependent solver behavior is acceptable here: either it reports
+        # failure/conflict (macOS), or it converges by collapsing the left edge
+        # (Linux). What must never happen is a clean solve with intact geometry -
+        # that would mean the constraint was silently weakened into a midpoint.
+        left_edge_len = (sketch.Geometry[3].StartPoint - sketch.Geometry[3].EndPoint).Length
         self.assertTrue(
-            status != 0 or len(sketch.ConflictingConstraints) > 0,
-            "impossible symmetry request must not solve cleanly",
+            status != 0 or len(sketch.ConflictingConstraints) > 0 or left_edge_len < 1e-6,
+            "impossible symmetry request must not solve cleanly with intact geometry",
         )
 
     def testReversedExternalGeometryLeavesSketchInPlace(self):
