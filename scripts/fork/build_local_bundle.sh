@@ -40,17 +40,17 @@ for e in FreeCAD FreeCADCmd ccx python pip gmsh dot unflatten; do
 done
 rm -rf bin_tmp
 sed -i '' '1s|.*|#!/usr/bin/env python|' bin/pip
-cp "$REPO/package/rattler-build/osx/resources/"* .
+cp "$REPO/package/bundle/osx/resources/"* .
 if [ -d PlugIns ]; then mv PlugIns ../; fi
 find . -path "*/__pycache__/*" -delete 2>/dev/null || true
 find . -name "*.pyc" -type f -delete 2>/dev/null || true
 
 echo "==> 5/8 Fixing library paths (official script)"
-python3 "$REPO/package/rattler-build/scripts/fix_macos_lib_paths.py" lib -r > /dev/null
+python3 "$REPO/package/bundle/osx/fix_macos_lib_paths.py" lib -r > /dev/null
 
 echo "==> 6/8 Building launcher"
 cd "$WORK"
-cmake -B build-launcher "$REPO/package/rattler-build/osx/launcher" > /dev/null
+cmake -B build-launcher "$REPO/package/bundle/osx/launcher" > /dev/null
 cmake --build build-launcher 2>&1 | tail -1
 mkdir -p "$APP/Contents/MacOS"
 cp build-launcher/FreeCAD "$APP/Contents/MacOS/FreeCAD"
@@ -61,7 +61,7 @@ v = json.load(open('$REPO/version.json'))
 print(f\"{v['version_major']}.{v['version_minor']}.{v['version_patch']}\")")
 sed -e "s/FREECAD_BUNDLE_VERSION/${version}d0/" \
     -e "s/APPLICATION_MENU_NAME/FreeCAD/" \
-    "$REPO/package/rattler-build/osx/Info.plist.template" > "$APP/Contents/Info.plist"
+    "$REPO/package/bundle/osx/Info.plist.template" > "$APP/Contents/Info.plist"
 pixi list -e default > "$APP/Contents/packages.txt" 2>/dev/null || true
 
 echo "==> 7/8 Smoke tests + rpath self-containment + signing"

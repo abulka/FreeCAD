@@ -67,16 +67,28 @@ class Quantity(PyObjectBase):
         ...
 
     @constmethod
-    def getUserPreferred(self) -> Tuple["Quantity", str]:
+    def getUserPreferred(self) -> Tuple[str, float, str]:
         """
-        Returns a quantity with the translation factor and a string with the prevered unit
+        Returns tuple with (quantity incl. unit, translation factor, unit)
         """
         ...
 
     @overload
     def getValueAs(self, unit: str, /) -> float: ...
     @overload
-    def getValueAs(self, translation: float, unit_signature: int, /) -> float: ...
+    def getValueAs(
+        self,
+        translation: float,
+        i1: int = 0,
+        i2: int = 0,
+        i3: int = 0,
+        i4: int = 0,
+        i5: int = 0,
+        i6: int = 0,
+        i7: int = 0,
+        i8: int = 0,
+        /,
+    ) -> float: ...
     @overload
     def getValueAs(self, unit: UnitPy, /) -> float: ...
     @overload

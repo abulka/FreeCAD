@@ -1,4 +1,5 @@
-find_package(PythonInterp REQUIRED)
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # ==============================================================================
 # File Management
@@ -141,6 +142,7 @@ SET(bimcommands_SRCS
     bimcommands/BimEquipment.py
     bimcommands/BimExamples.py
     bimcommands/BimExtrude.py
+    bimcommands/BimExtrudeFace.py
     bimcommands/BimFence.py
     bimcommands/BimFrame.py
     bimcommands/BimFuse.py
@@ -186,6 +188,7 @@ SET(bimcommands_SRCS
     bimcommands/BimTDView.py
     bimcommands/BimText.py
     bimcommands/BimTrash.py
+    bimcommands/BimTrimex.py
     bimcommands/BimTruss.py
     bimcommands/BimTutorial.py
     bimcommands/BimUnclone.py
@@ -233,6 +236,7 @@ SET(bimtests_SRCS
     bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py
     bimtests/TestArchBaseGui.py
+    bimtests/TestBimTrimexGui.py
     bimtests/TestArchComponent.py
     bimtests/TestArchCovering.py
     bimtests/TestArchCoveringGui.py
@@ -248,6 +252,7 @@ SET(bimtests_SRCS
     bimtests/TestArchWindowGui.py
     bimtests/TestArchStairs.py
     bimtests/TestArchStructure.py
+    bimtests/test_structure_column_flip_v1_0_v1_1.FCStd
     bimtests/TestArchPipe.py
     bimtests/TestArchCurtainWall.py
     bimtests/TestArchProfile.py
@@ -301,7 +306,7 @@ set(BIM_GENERATED_PARSER ${CMAKE_BINARY_DIR}/Mod/BIM/generated_sql_parser.py)
 
 add_custom_command(
     OUTPUT ${BIM_GENERATED_PARSER}
-    COMMAND ${PYTHON_EXECUTABLE} ${BIM_PARSER_GENERATOR} ${BIM_LARK_GRAMMAR} ${BIM_GENERATED_PARSER}
+    COMMAND ${Python3_EXECUTABLE} ${BIM_PARSER_GENERATOR} ${BIM_LARK_GRAMMAR} ${BIM_GENERATED_PARSER}
     DEPENDS ${BIM_LARK_GRAMMAR} ${BIM_PARSER_GENERATOR}
     COMMENT "Generating Arch SQL parser..."
 )
