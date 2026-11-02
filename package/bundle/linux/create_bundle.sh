@@ -34,6 +34,9 @@ echo -e "\nCopying Icon and Desktop file"
 cp ${conda_env}/share/applications/org.freecad.FreeCAD.desktop AppDir/
 sed -i 's/Exec=FreeCAD/Exec=AppRun/g' AppDir/org.freecad.FreeCAD.desktop
 cp ${conda_env}/share/icons/hicolor/scalable/apps/org.freecad.FreeCAD.svg AppDir/
+# appimagetool requires a raster icon at the AppDir top level to create .DirIcon
+# (recent continuous builds fail the bundle without it); largest PNG FreeCAD installs.
+cp ${conda_env}/share/icons/hicolor/64x64/apps/org.freecad.FreeCAD.png AppDir/org.freecad.FreeCAD.png
 
 # Remove __pycache__ folders and .pyc files
 find . -path "*/__pycache__/*" -delete
